@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>DANCE PARTY!</title>
+    <title>KARAOKE PARTY!</title>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
@@ -31,10 +31,10 @@
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             object-fit: cover;
-            z-index: -1; /* Moved to -1 to prevent being buried under body color */
+            z-index: -1; 
         }
 
-        /* Banner Spacer (30% for your video title) */
+        /* Banner Spacer (35% gap for your Karaoke Title) */
         .banner-space {
             height: 35vh;
             width: 100%;
@@ -159,7 +159,7 @@
             <div class="box" id="box-8"></div>
             <div class="box" id="box-9"></div>
         </div>
-        <button id="start-btn" onclick="initiateGame()">DANCE!</button>
+        <button id="start-btn" onclick="initiateGame()">SING!</button>
     </div>
 
     <div id="countdown-overlay">READY?</div>
@@ -173,7 +173,8 @@
     <audio id="sfx-stop" src="reveal.mp3" preload="auto"></audio>
 
     <script>
-        const danceVideos = ["dance1.mp4", "dance2.mp4", "dance3.mp4", "dance4.mp4", "dance5.mp4", "dance6.mp4", "dance7.mp4", "dance8.mp4", "dance9.mp4", "dance10.mp4"];
+        // Updated song list to match your files
+        const songVideos = ["song1.mp4", "song2.mp4", "song3.mp4", "song4.mp4", "song5.mp4"];
         const goodJobVideo = "good-job.mp4";
         
         const boxes = document.querySelectorAll('.box');
@@ -188,13 +189,12 @@
 
         function adjustSize(val) { document.documentElement.style.setProperty('--game-scale', val + 'vh'); }
 
-        // Core iPad Trigger
         function initiateGame() {
-            // Unlock all media immediately on first tap
+            // Unblock and force play background
             sfxShimmer.play().then(() => sfxShimmer.pause());
             sfxStop.play().then(() => sfxStop.pause());
             videoPlayer.play().then(() => videoPlayer.pause());
-            bgVideo.play(); // Force background if paused
+            if (bgVideo.paused) bgVideo.play();
 
             runSelectionCycle();
         }
@@ -216,7 +216,8 @@
                     clearInterval(interval);
                     sfxShimmer.pause();
                     sfxStop.play();
-                    setTimeout(() => startCountdown(count % 10), 1000);
+                    // Choose from the 5 available songs
+                    setTimeout(() => startCountdown(count % 5), 1000);
                 }
             }, 130);
         }
@@ -240,8 +241,7 @@
 
         function playSequence(index) {
             overlay.style.display = 'block';
-            
-            const src = danceVideos[index];
+            const src = songVideos[index];
             videoPlayer.src = src;
             blurPlayer.src = src;
             

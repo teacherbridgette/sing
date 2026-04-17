@@ -16,131 +16,77 @@
         }
 
         body {
-            background: #000;
-            color: #fff;
-            font-family: 'Fredoka', sans-serif;
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            width: 100vw;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+            background: #000; color: #fff; font-family: 'Fredoka', sans-serif;
+            margin: 0; padding: 0; height: 100vh; width: 100vw;
+            display: flex; flex-direction: column; overflow: hidden;
             touch-action: manipulation;
         }
 
         #bg-video-main {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover;
-            z-index: -2;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; z-index: -2;
         }
 
-        /* Fullscreen Toggle Widget */
         #fullscreen-btn {
-            position: fixed;
-            top: 25px;
-            right: 25px;
-            width: 50px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid var(--gold);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
+            position: fixed; top: 25px; right: 25px; width: 50px; height: 50px;
+            background: rgba(255, 255, 255, 0.1); border: 2px solid var(--gold);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            z-index: 1000; backdrop-filter: blur(10px);
         }
 
         .banner-space { height: 35vh; }
 
         .game-area-bottom {
-            height: 65vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            height: 65vh; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
         }
 
-        #game-grid {
-            display: flex;
-            justify-content: center;
-            gap: 3vh;
-            z-index: 1;
-            width: 95%;
-        }
+        #game-grid { display: flex; justify-content: center; gap: 3vh; z-index: 1; width: 95%; }
 
         .box {
-            width: var(--game-scale); 
-            height: var(--game-scale);
-            border: 0.6vh solid var(--royal-purple);
-            border-radius: 5vh;
-            background-image: url('box-design.png');
-            background-size: cover;
-            background-position: center;
-            background-color: rgba(0,0,0,0.4);
+            width: var(--game-scale); height: var(--game-scale);
+            border: 0.6vh solid var(--royal-purple); border-radius: 5vh;
+            background-image: url('box-design.png'); background-size: cover;
+            background-position: center; background-color: rgba(0,0,0,0.4);
             box-shadow: 0 0 3vh rgba(157, 0, 255, 0.4);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .box.shimmer {
             border-color: var(--gold) !important;
             box-shadow: 0 0 12vh var(--gold) !important;
-            transform: scale(1.15);
-            z-index: 10;
+            transform: scale(1.15); z-index: 10;
         }
 
         #start-btn {
-            margin-top: 5vh;
-            padding: 2.5vh 12vw;
-            font-size: 7vh;
-            font-family: 'Fredoka', sans-serif;
-            font-weight: 700;
-            cursor: pointer;
+            margin-top: 5vh; padding: 2.5vh 12vw; font-size: 7vh;
+            font-weight: 700; cursor: pointer; color: white; border: none;
             background: linear-gradient(45deg, var(--royal-purple), var(--gold));
-            color: white;
-            border: none;
-            border-radius: 100px;
-            box-shadow: 0 0 5vh var(--royal-purple);
-            z-index: 10;
+            border-radius: 100px; box-shadow: 0 0 5vh var(--royal-purple);
         }
 
         #video-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: black;
-            z-index: 2000;
+            display: none; position: fixed; top: 0; left: 0; 
+            width: 100%; height: 100%; background: black; z-index: 2000;
         }
 
         #video-blur-bg {
-            position: absolute;
-            width: 120%; height: 120%;
-            top: -10%; left: -10%;
-            object-fit: cover;
-            filter: blur(40px) brightness(0.4);
+            position: absolute; width: 110%; height: 110%;
+            top: -5%; left: -5%; object-fit: cover;
+            filter: blur(30px) brightness(0.5);
+            -webkit-filter: blur(30px) brightness(0.5); /* Safari Fix */
             z-index: 2001;
         }
 
         #game-video {
-            position: relative;
-            width: 100%; height: 100%;
-            object-fit: contain;
-            z-index: 2002;
+            position: relative; width: 100%; height: 100%;
+            object-fit: contain; z-index: 2005; /* Moved way to the front */
+            filter: none !important; -webkit-filter: none !important;
         }
 
         #countdown-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 3000;
-            justify-content: center;
-            align-items: center;
-            font-size: 30vh;
-            color: var(--gold);
-            font-weight: bold;
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 3000; justify-content: center;
+            align-items: center; font-size: 30vh; color: var(--gold); font-weight: bold;
         }
     </style>
 </head>
@@ -158,11 +104,7 @@
 
     <div class="game-area-bottom">
         <div id="game-grid">
-            <div class="box"></div>
-            <div class="box"></div>
-            <div class="box"></div>
-            <div class="box"></div>
-            <div class="box"></div>
+            <div class="box"></div><div class="box"></div><div class="box"></div><div class="box"></div><div class="box"></div>
         </div>
         <button id="start-btn" onclick="unlockAndStart()">SING!</button>
     </div>
@@ -180,46 +122,35 @@
     <script>
         const songVideos = ["song1.mp4", "song2.mp4", "song3.mp4", "song4.mp4", "song5.mp4"];
         const goodJobVideo = "good-job.mp4";
-        
         const videoPlayer = document.getElementById('game-video');
         const blurPlayer = document.getElementById('video-blur-bg');
         const overlay = document.getElementById('video-overlay');
         const countOverlay = document.getElementById('countdown-overlay');
         const startBtn = document.getElementById('start-btn');
-        const boxes = document.querySelectorAll('.box');
 
         function toggleFullScreen() {
             const docEl = document.documentElement;
-            const request = docEl.webkitRequestFullscreen || docEl.requestFullscreen;
-            if (request) request.call(docEl);
-            // Pre-warm the player
+            if (docEl.webkitRequestFullscreen) docEl.webkitRequestFullscreen();
             videoPlayer.play().then(() => videoPlayer.pause());
         }
 
         function unlockAndStart() {
             if (document.documentElement.webkitRequestFullscreen) document.documentElement.webkitRequestFullscreen();
-            
-            // iPad sound/video unlock
-            videoPlayer.play().then(() => {
-                videoPlayer.pause();
-                videoPlayer.muted = false;
-            }).catch(e => console.log("Unlock error", e));
-
+            videoPlayer.play().then(() => { videoPlayer.pause(); videoPlayer.muted = false; });
             runSelectionCycle();
         }
 
         function runSelectionCycle() {
             startBtn.style.visibility = 'hidden';
             document.getElementById('sfx-shimmer').play();
-            
             let count = 0;
-            let totalSteps = 15 + Math.floor(Math.random() * 10);
+            const boxes = document.querySelectorAll('.box');
 
             const interval = setInterval(() => {
                 boxes.forEach(b => b.classList.remove('shimmer'));
                 boxes[count % 5].classList.add('shimmer');
                 count++;
-                if (count > totalSteps) {
+                if (count > 15) {
                     clearInterval(interval);
                     document.getElementById('sfx-shimmer').pause();
                     document.getElementById('sfx-shimmer').currentTime = 0;
@@ -233,10 +164,11 @@
             countOverlay.style.display = 'flex';
             let timer = 3;
             
-            // Critical iPad Fix: Set source and call .load()
             const songFile = songVideos[boxIndex];
             videoPlayer.src = songFile;
             blurPlayer.src = songFile;
+            
+            // iPad Fix: Clear memory and load fresh
             videoPlayer.load();
             blurPlayer.load();
 
@@ -251,25 +183,25 @@
                     clearInterval(countInterval);
                     countOverlay.style.display = 'none';
                     overlay.style.display = 'block';
-                    videoPlayer.play();
-                    blurPlayer.play();
+                    
+                    // Force the main player to play first, then the blur
+                    videoPlayer.play().then(() => {
+                        blurPlayer.play();
+                    });
                 }
             }, 800);
         }
 
-        // Seamless transition logic
         videoPlayer.addEventListener('ended', function() {
             if (!videoPlayer.src.includes(goodJobVideo)) {
                 videoPlayer.src = goodJobVideo;
                 blurPlayer.src = goodJobVideo;
-                videoPlayer.load();
-                blurPlayer.load();
-                videoPlayer.play();
-                blurPlayer.play();
+                videoPlayer.load(); blurPlayer.load();
+                videoPlayer.play(); blurPlayer.play();
             } else {
                 overlay.style.display = 'none';
                 startBtn.style.visibility = 'visible';
-                boxes.forEach(b => b.classList.remove('shimmer'));
+                document.querySelectorAll('.box').forEach(b => b.classList.remove('shimmer'));
                 blurPlayer.pause();
             }
         });

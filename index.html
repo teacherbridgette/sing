@@ -8,10 +8,8 @@
     
     <style>
         :root {
-            /* Updated Theme Colors for Singing/Karaoke */
             --gold: #ffcc00;
             --royal-purple: #9d00ff;
-            --deep-violet: #4e008a;
             --game-scale: 28vh; 
         }
 
@@ -26,7 +24,7 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            touch-action: manipulation; /* Prevents iPad zoom on double tap */
+            touch-action: manipulation;
         }
 
         #bg-video-main {
@@ -36,10 +34,7 @@
             z-index: -2;
         }
 
-        .banner-space {
-            height: 30vh;
-            width: 100%;
-        }
+        .banner-space { height: 30vh; width: 100%; }
 
         .game-area-bottom {
             height: 70vh;
@@ -48,7 +43,6 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            box-sizing: border-box;
         }
 
         #game-grid {
@@ -65,9 +59,6 @@
             border: 0.6vh solid rgba(157, 0, 255, 0.5);
             border-radius: 4vh;
             background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-image: url('box-design.png');
             background-color: rgba(0,0,0,0.4);
             box-shadow: 0 0 2vh rgba(157, 0, 255, 0.4);
             animation: borderPulse 3s infinite alternate;
@@ -106,11 +97,8 @@
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.8);
             z-index: 500;
-            justify-content: center;
-            align-items: center;
-            font-size: 25vh;
-            font-weight: bold;
-            color: var(--gold);
+            justify-content: center; align-items: center;
+            font-size: 25vh; font-weight: bold; color: var(--gold);
             text-shadow: 0 0 50px var(--gold);
         }
 
@@ -123,19 +111,13 @@
         }
 
         #video-blur-bg {
-            position: absolute;
-            width: 120%; height: 120%;
-            top: -10%; left: -10%;
-            object-fit: cover;
-            filter: blur(40px) brightness(0.4);
-            z-index: 601;
+            position: absolute; width: 120%; height: 120%; top: -10%; left: -10%;
+            object-fit: cover; filter: blur(40px) brightness(0.4); z-index: 601;
         }
 
         #game-video {
-            position: relative;
-            width: 100%; height: 100%;
-            object-fit: contain;
-            z-index: 602;
+            position: relative; width: 100%; height: 100%;
+            object-fit: contain; z-index: 602;
         }
 
         .controls-top {
@@ -171,16 +153,7 @@
 
     <div class="game-area-bottom">
         <div id="game-grid">
-            <div class="box" id="box-0"></div>
-            <div class="box" id="box-1"></div>
-            <div class="box" id="box-2"></div>
-            <div class="box" id="box-3"></div>
-            <div class="box" id="box-4"></div>
-            <div class="box" id="box-5"></div>
-            <div class="box" id="box-6"></div>
-            <div class="box" id="box-7"></div>
-            <div class="box" id="box-8"></div>
-            <div class="box" id="box-9"></div>
+            <div class="box" id="box-0"></div><div class="box" id="box-1"></div><div class="box" id="box-2"></div><div class="box" id="box-3"></div><div class="box" id="box-4"></div><div class="box" id="box-5"></div><div class="box" id="box-6"></div><div class="box" id="box-7"></div><div class="box" id="box-8"></div><div class="box" id="box-9"></div>
         </div>
         <button id="start-btn" onclick="runSelectionCycle()">SING!</button>
     </div>
@@ -196,7 +169,6 @@
     <audio id="sfx-stop" src="reveal.mp3"></audio>
 
     <script>
-        // Updated to your 5 song files
         const songVideos = ["song1.mp4", "song2.mp4", "song3.mp4", "song4.mp4", "song5.mp4"];
         const goodJobVideo = "good-job.mp4";
         
@@ -214,15 +186,9 @@
         function toggleFullScreen() {
             const doc = window.document;
             const docEl = doc.documentElement;
-            // Support for iPad/Safari and standard browsers
-            const request = docEl.requestFullscreen || docEl.webkitRequestFullscreen || docEl.mozRequestFullScreen || docEl.msRequestFullscreen;
-            const cancel = doc.exitFullscreen || doc.webkitExitFullscreen || doc.mozCancelFullScreen || doc.msExitFullscreen;
-            
-            if (!doc.fullscreenElement && !doc.webkitFullscreenElement) { 
-                if (request) request.call(docEl); 
-            } else { 
-                if (cancel) cancel.call(doc); 
-            }
+            const request = docEl.requestFullscreen || docEl.webkitRequestFullscreen;
+            if (!doc.fullscreenElement && !doc.webkitFullscreenElement) { request.call(docEl); } 
+            else { (doc.exitFullscreen || doc.webkitExitFullscreen).call(doc); }
         }
 
         function runSelectionCycle() {
@@ -260,20 +226,25 @@
                 } else {
                     clearInterval(countInterval);
                     countOverlay.style.display = 'none';
-                    // We use % 5 because we have 10 boxes but only 5 song files
                     playSequence(boxIndex % 5);
                 }
             }, 800);
         }
 
+        // CRITICAL UPDATE: Ensures the full song plays
         function playSequence(index) {
             overlay.style.display = 'block';
-            startVideo(songVideos[index]);
             
+            // Set the song
+            startVideo(songVideos[index]);
+
+            // When the SONG ends, play Good Job
             videoPlayer.onended = () => {
-                if(videoPlayer.getAttribute('src') !== goodJobVideo) {
+                if(!videoPlayer.src.includes(goodJobVideo)) {
+                    console.log("Song finished, playing Good Job");
                     startVideo(goodJobVideo);
                 } else {
+                    console.log("Good Job finished, resetting");
                     overlay.style.display = 'none';
                     startBtn.style.visibility = 'visible';
                     boxes.forEach(b => b.classList.remove('shimmer'));
@@ -285,8 +256,10 @@
         function startVideo(src) {
             videoPlayer.src = src;
             blurPlayer.src = src;
-            videoPlayer.load(); // Forces reload for mobile/iPad
-            videoPlayer.play();
+            videoPlayer.load(); // Forces iPad to re-buffer the full file
+            blurPlayer.load();
+            
+            videoPlayer.play().catch(e => console.log("Video Play Error:", e));
             blurPlayer.play();
         }
     </script>
